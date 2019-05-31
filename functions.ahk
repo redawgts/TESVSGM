@@ -7,34 +7,34 @@ doScanForSavegameNames( in_strSavegamefolder)
 	lstSavegames =
 	strName =
 	strNameOld =
-	
-	Loop, %in_strSavegamefolder%\Saves\*.ess,0,1 
+
+	Loop, %in_strSavegamefolder%\Saves\*.ess,0,1
 	{
 		strName = %A_LoopFileName%
 		if strName = autosave1.ess
 			Continue
-				
+
 		else if strName = autosave2.ess
 			Continue
-				
+
 		else if strName = autosave3.ess
 			Continue
-								
+
 		else if strName = quicksave.ess
 			Continue
-		
+
 		else
 		{
-			
+
 			;scan for name of character
 			;
-			
+
 			nPos := InStr(strName, " - ")
 			If nPos >0
 			{
 				strName := SubStr(strName, nPos) ;remove the savegame prefix "Speich. "
 				strName := SubStr(strName, 4) ;remove the "- "
-			
+
 				nPos := InStr(strName, "  ")
 				If nPos >0
 				{
@@ -51,17 +51,17 @@ doScanForSavegameNames( in_strSavegamefolder)
 					lstSavegames = %lstSavegames%%strName%`n
 				}
 				strNameOld := strName
-				
-				
+
+
 			} ;if nPos >0
-			
+
 		} ;else
 	} ;loop
-	
+
 	Sort, lstSavegames, U
-	
+
 Return lstSavegames
-} ;doScanForSavegameNames()	
+} ;doScanForSavegameNames()
 
 
 ;----------------------------
@@ -69,10 +69,10 @@ doCreateSavegameFolders( in_strProfileFolder, in_lstSavegameNames, in_strSubfold
 {
 	Loop, parse, in_lstSavegameNames, `n
 	{
-		if A_LoopField != 
+		if A_LoopField !=
 		{
 			strFoldername := A_LoopField
-			
+
 			;create character folders
 			IfNotExist, %in_strProfileFolder%\%in_strSubfolder%\%strFoldername%
 			{
@@ -93,10 +93,10 @@ doCopySavegames( in_strSavegameFolder, in_lstSavegameNames, in_strSubfolder)
 	;scan normal savegame folder for savegames
 	Loop, parse, in_lstSavegameNames, `n
 	{
-		if A_LoopField != 
+		if A_LoopField !=
 		{
 			strFoldername := A_LoopField
-			
+
 			;if profile folder exist
 			IfExist, %in_strSavegameFolder%\%in_strSubfolder%\%strFoldername%
 			{
@@ -114,7 +114,7 @@ doCopySavegames( in_strSavegameFolder, in_lstSavegameNames, in_strSubfolder)
 ;-----------------
 doUpdateProfileDDL( in_strSavegamefolder, in_strSubfolder, in_strPreSelect)
 {
-	
+
 	;check if profile for preselection exists
 	if (in_strPreSelect != STANDARD)
 	{
@@ -123,7 +123,7 @@ doUpdateProfileDDL( in_strSavegamefolder, in_strSubfolder, in_strPreSelect)
 			in_strPreSelect = STANDARD
 		}
 	}
-	
+
 	;clear the dropdownlist
 	GuiControl, , ddlCharacter, |
 
@@ -158,8 +158,8 @@ doUpdateProfileDDL( in_strSavegamefolder, in_strSubfolder, in_strPreSelect)
 
 	Gosub, guiDropdownProfile
 	;update GUI
-	Gui, Show	
-	
+	Gui, Show
+
 Return lstProfilenames
 } ;doUpdateProfileDDL
 
@@ -169,26 +169,26 @@ Return lstProfilenames
 doCountSavegames( in_strProfilefolder, in_strProfilesub, in_strActiveProfile)
 {
 	iCount = 0
-	
+
 	strPath=
-	
+
 	if in_strActiveProfile=
 	{
 		iCount = 0
 	}
-	
+
 	else
 	{
 		if in_strActiveProfile=STANDARD
 		{
 			strPath = %in_strProfilefolder%\Saves
 		}
-		
+
 		else
 		{
 			strPath = %in_strProfilefolder%\%in_strProfilesub%\%in_strActiveProfile%
 		}
-		
+
 		Loop, %strPath%\*.ess,0,1
 		{
 			iCount := A_Index

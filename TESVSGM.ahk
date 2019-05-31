@@ -61,20 +61,20 @@ Menu, menuMain, Add, Help, :subMenuHELP
 ;remove AHK items
 Menu, Tray, NoStandard
 
-Menu, Tray, Add		;a line ------ 
+Menu, Tray, Add		;a line ------
 Menu, Tray, Add, Run %LONGNAME%, submenuTrayHandler
-Menu, Tray, Add		;a line ------ 
+Menu, Tray, Add		;a line ------
 Menu, Tray, Add, Open %SHORTNAME% window, submenuTrayHandler
-Menu, Tray, Add		;a line ------ 
+Menu, Tray, Add		;a line ------
 Menu, Tray, Add, Exit, submenuTrayHandler
 
 
 ;-------------------------------------
 ;GUI window 1
 ;-------------------------------------
-Gui, Add, GroupBox, x6 y1 w320 h130 , 
+Gui, Add, GroupBox, x6 y1 w320 h130 ,
 Gui, Add, Text, x16 y11 w200 h20 , Select Profile
-Gui, Add, DropDownList, x16 y31 w300 h300 vddlCharacter gguiDropdownProfile, 
+Gui, Add, DropDownList, x16 y31 w300 h300 vddlCharacter gguiDropdownProfile,
 Gui, Add, Text, x16 y60 w180 h20 vguiSavegameCount,
 Gui, Add, Button, x16 y80 w300 h40 gsubRunGame, Play
 Gui, Add, Picture, x6 y135 w320 h-1 vpic, standard.jpg

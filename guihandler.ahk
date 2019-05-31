@@ -5,36 +5,36 @@ submenuSGHandler:
 
 	If A_ThisMenuItem = Create New Profile...
 	{
-	
+
 		InputBox, strNewProfileName, Create New Profile, Enter the name of your new profile`nNew Profilename:
-		
+
 		;user click OK
 		If (ErrorLevel = 0 AND StrLen( strNewProfileName) > 0)
 		{
-			
+
 			;abort if profile exist already
 			IfExist %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%strNewProfileName%
 			{
 				MsgBox, 0, ERROR, The Profile exists already!
 			}
-			
+
 			Else
 			{
 				FileCreateDir %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%strNewProfileName%
 				MsgBox, 4, Create New Profile Folder,Explore the new profile folder?
-				
+
 				ACTIVE=%strNewProfileName%
 				doUpdateProfileDDL(SAVEGAMESFOLDER,PROFILESSUBFOLDER,ACTIVE)
-				
+
 				IfMsgBox, Yes
 				{
 					Run, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%strNewProfileName%
-					
-				}	
+
+				}
 			}
 		}
 	}
-	
+
 	Else If A_ThisMenuItem = Backup Active Profile...
 	{
 
@@ -42,11 +42,11 @@ submenuSGHandler:
 		If ACTIVE = STANDARD
 		{
 			FileSelectFolder, strBackupFolder,,, Backup -%ACTIVE%- to ...
-			
+
 			;folderselect OK
-			if strBackupFolder!= 
-			{	
-							
+			if strBackupFolder!=
+			{
+
 				FileCopyDir, %SAVEGAMESFOLDER%\Saves, %strBackupFolder%\STANDARD, 1
 			}
 		Return
@@ -63,11 +63,11 @@ submenuSGHandler:
 		IfExist, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ACTIVE%
 		{
 			FileSelectFolder, strBackupFolder,,, Backup -%ACTIVE%- to ...`n
-			
+
 			;folderselect OK
-			if strBackupFolder!= 
+			if strBackupFolder!=
 			{
-							
+
 				FileCopyDir, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ACTIVE%, %strBackupFolder%\%ACTIVE%, 1
 			}
 		}
@@ -77,30 +77,30 @@ submenuSGHandler:
 	Else If A_ThisMenuItem = Backup All Profiles...
 	{
 		FileSelectFolder, strBackupFolder,,, Backup -%ACTIVE%- to ...`n
-			
+
 		;folderselect OK
-		if strBackupFolder!= 
+		if strBackupFolder!=
 		{
-			
-			FileCopyDir, %SAVEGAMESFOLDER%\Saves, %strBackupFolder%\STANDARD, 1							
+
+			FileCopyDir, %SAVEGAMESFOLDER%\Saves, %strBackupFolder%\STANDARD, 1
 			FileCopyDir, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%, %strBackupFolder%, 1
 		}
 	}
 
-	
+
 	Else If A_ThisMenuItem = Scan For New Profiles
 	{
 
 		MsgBox, Note that your actual AUTO- and QUICKSAVE will stay in the STANDARD profile.`n`nTo move it to your character's profile:`n`n*Activate STANDARD profile`n*Run %LONGNAME% and load your AUTO/QUICKSAVE`n*Save as New Savegame`n*Run Scan again
 
 		gosub subScanForNewProfiles
-		
+
 		;Activate STANDARD profile
 		IniWrite, STANDARD, %INIFILENAME%, general, active
 		ACTIVE = STANDARD
 		Gosub, subActivateProfile
 		doUpdateProfileDDL(SAVEGAMESFOLDER,PROFILESSUBFOLDER,ACTIVE)
-		
+
 	}
 
 	else if A_ThisMenuItem = Open %LONGNAME% Savegame Folder
@@ -119,14 +119,14 @@ submenuSGHandler:
 			{
 				Run, "%SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ACTIVE%"
 			}
-			
+
 			Else
 			{
 				Run, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\
 			}
 		}
 	}
-	
+
 ;submenuSGHandler
 Return
 
@@ -144,7 +144,7 @@ submenuADVHandler:
 			IniWrite, %strRunfile%, %INIFILENAME%, advanced, playbuttonlink
 		}
 	}
-	
+
 ;submenuADVHandler
 Return
 
@@ -195,7 +195,7 @@ guiDropdownProfile:
 
 	Gui, Submit, NoHide
 		;after submit -> ddlCharacter = savegame profile folder (or STANDARD)
-	
+
 	strPicFilename=
 
 	;activate selected profile
@@ -207,31 +207,31 @@ guiDropdownProfile:
 
 	;show profile picture
 	;
-	
+
 	;if standard, use standard pic
-	If ddlCharacter = STANDARD 
+	If ddlCharacter = STANDARD
 	{
 		strPicFilename = standard.jpg
-	}	
+	}
 
-	else 
+	else
 	{
 		;scan profile folder for jpg
-		Loop, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ddlCharacter%\*.jpg, 0, 1 
+		Loop, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ddlCharacter%\*.jpg, 0, 1
 		{
-			If A_LoopFileName != 
+			If A_LoopFileName !=
 			{
 				strPicFilename=%SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ddlCharacter%\%A_LoopFileName%
 				Break
 			}
 		}
 
-		If strPicFilename = 
+		If strPicFilename =
 		{
 			;scan profile folder for jpg
-			Loop, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ddlCharacter%\*.bmp, 0, 1 
+			Loop, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ddlCharacter%\*.bmp, 0, 1
 			{
-				If A_LoopFileName != 
+				If A_LoopFileName !=
 				{
 					strPicFilename=%SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ddlCharacter%\%A_LoopFileName%
 					Break
@@ -239,16 +239,16 @@ guiDropdownProfile:
 			}
 		}
 	}
-	
-	if strPicFilename = 
+
+	if strPicFilename =
 	{
 		strPicFilename = standard.jpg
 	}
-	
+
 	;set picture control
 	GuiControl, ,pic, %strPicFilename%
 
-	
+
 ;guiDropdownProfile:
 Return
 
@@ -270,26 +270,26 @@ GuiDropFiles:
 		if ACTIVE=
 		{
 		}
-		
+
 		else if ACTIVE=STANDARD
 		{
 			MsgBox, You cannot change the STANDARD profile picture!
 		}
-		
+
 		else
 		{
 			;remove previous pic
 			FileDelete, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ACTIVE%\*.jpg
 			FileDelete, %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ACTIVE%\*.bmp
-			
-			;copy the picture to the profilefolder	
+
+			;copy the picture to the profilefolder
 			FileCopy, %strFilename%,  %SAVEGAMESFOLDER%\%PROFILESSUBFOLDER%\%ACTIVE%
-			
+
 			;show the new pic
 			gosub guiDropdownProfile
 		}
-		
-		
+
+
 	}
 
 ;GuiDropFiles
