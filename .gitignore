@@ -2,5 +2,3 @@ syntax: glob
 *.ini
 *.exe
 *.zip
-
-.hg/
